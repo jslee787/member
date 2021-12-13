@@ -1,10 +1,12 @@
+//마우스 이벤트 효과
 var pic = document.getElementById('pic');
-pic.onmouseover = changePic;
+pic.onmouseover = changePic;  //함수 호출 ()괄호 생략
 pic.onmouseout = originPic;
 
-function changePic(){   //마우스 올리면 사진 변경
+function changePic(){  //사진 변경
     pic.src = "../static/images/healing.jpg";
 }
-function originPic(){   //마우스 빼면 사진 원래대로
+
+function originPic(){  //원래 사진으로 변경
     pic.src = "../static/images/activity.jpg";
 }
