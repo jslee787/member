@@ -10,11 +10,7 @@ def getconn():
 
 @app.route('/')  #127.0.0.1:5000
 def index():
-    if 'userID' in session:   #session에 userID가 존재하면
-        ssid = session.get('userID')  # 세션을 가져옴
-        return render_template('index.html', ssid=ssid) #index로 보내기
-    else:
-        return render_template('index.html')
+    return render_template('index.html')
 
 @app.route('/memberlist/')
 def memberlist():
@@ -24,11 +20,7 @@ def memberlist():
     cur.execute(sql)
     rs = cur.fetchall()   #db에서 검색한 데이터
     conn.close()
-    if 'userID' in session:  # session에 userID가 존재하면
-        ssid = session.get('userID')  # 세션을 가져옴
-        return render_template('memberlist.html', ssid=ssid, rs=rs)
-    else:
-        return render_template('memberlist.html')
+    return render_template('memberlist.html', rs=rs)
 
 @app.route('/member_view/<string:id>/')
 def member_view(id):  #mid를 경로로 설정하고 매개변수로 넘겨줌
@@ -38,11 +30,7 @@ def member_view(id):  #mid를 경로로 설정하고 매개변수로 넘겨줌
     cur.execute(sql)
     rs = cur.fetchone()  #해당 1개의 자료를 반환받음
     conn.close()
-    if 'userID' in session:  # session에 userID가 존재하면
-        ssid = session.get('userID')  # 세션을 가져옴
-        return render_template('member_view.html', rs=rs, ssid=ssid)
-    else:
-        return render_template('member_view.html')
+    return render_template('member_view.html', rs=rs)
 
 @app.route('/register/', methods = ['GET', 'POST'])  #url 경로
 def register():
@@ -118,12 +106,12 @@ def member_edit(id):
         pwd = request.form['passwd']
         name = request.form['name']
         age = request.form['age']
-        date = request.form['regDate']
+
         #db 연결
         conn = getconn()
         cur = conn.cursor()
-        sql = "UPDATE member SET passwd = '%s', name = '%s' , age = '%s', regDate = '%s' " \
-              "WHERE mid = '%s' " % (pwd, name, age, date, id)
+        sql = "UPDATE member SET passwd = '%s', name = '%s' , age = %s " \
+              "WHERE mid = '%s' " % (pwd, name, age, id)
         cur.execute(sql)  # 실행 함수
         conn.commit()  # 커밋 완료
         conn.close()
@@ -141,5 +129,37 @@ def member_edit(id):
             return render_template('member_edit.html', rs=rs, ssid=ssid)
         else:
             return render_template('member_edit.html')
+
+#게시판 목록
+@app.route('/boardlist/')
+def boardlist():
+    conn = getconn()
+    cur = conn.cursor()
+    sql = "SELECT * FROM board ORDER BY bno DESC"
+    cur.execute(sql)
+    rs = cur.fetchall()
+    conn.close()
+    return render_template('boardlist.html', rs=rs)
+
+@app.route('/writing/', methods = ['GET', 'POST'])
+def writing():
+    if request.method == "POST":
+        #자료 전달받음
+        title = request.form['title']
+        content = request.form['content']
+        mid = session.get('userID') #글쓴이 - 로그인한 mid(세션권한있음))
+
+        #db에 글 추가
+        conn = getconn()
+        cur = conn.cursor()
+        sql = "INSERT INTO board(title, content, mid) VALUES ('%s', '%s', '%s') " \
+               % (title, content, mid)
+        cur.execute(sql)
+        conn.commit()
+        print("게시글 추가")
+        conn.close()
+        return redirect(url_for('boardlist'))
+    else:
+        return render_template('writing.html')
 
 app.run(debug=True)
