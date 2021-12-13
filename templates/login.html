@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>로그인 페이지</title>
-    <link rel = "stylesheet" href="{{  url_for('static', filename='css/style.css')  }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div id="container">
-        {% include 'navbar.html' %}
+        {% include "navbar.html" %}
         <section>
             <h1>로그인</h1>
             <form action="{{ url_for('login') }}" method="post" class="login">
@@ -25,7 +25,7 @@
                             <input type="password" id="passwd1" name="passwd">
                         </li>
                         <li>
-                           <input type="submit" value="로그인">
+                            <input type="submit" value="로그인">
                         </li>
                     </ul>
                 </fieldset>

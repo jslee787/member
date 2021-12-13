@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>회원 목록</title>
-    <link rel = "stylesheet" href="{{  url_for('static', filename='css/style.css')  }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div id="container">
-        {% if ssid == null %} <!--session이 없다면 즉, 로그인하지 않았다면-->
+        {% if ssid == null %} <!--session이 없다면 즉, 로그인하지 않았다면 -->
         <script>
             alert('먼저 로그인해 주세요');
-            location.href = '/login/';      //경로이동 객체(location.href)
+            location.href = '/login/';  //경로이동 객체(location.href)
         </script>
         {% endif %}
         {% include 'navbar.html' %}
@@ -22,17 +22,16 @@
                 </tr>
                 {% for i in rs %}
                 <tr>
-                    <td><a href="{{ url_for('member_view', id=i[0]) }}"> {{ i[0] }} </a></td>
+                    <td><a href="{{ url_for('member_view', id=i[0]) }}">{{ i[0] }}</a></td>
                     <td>{{ i[1] }}</td>
                     <td>{{ i[2] }}</td>
                     <td>{{ i[3] }}</td>
                     <td>{{ i[4] }}</td>
                 </tr>
                 {% endfor %}
-            </table>
 
+            </table>
         </section>
     </div>
-
 </body>
 </html>
