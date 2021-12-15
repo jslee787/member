@@ -25,15 +25,15 @@ def drop_table():
     conn = getconn()
     cur = conn.cursor()
     sql = "DROP TABLE member"
-    cur.execute(sql)    #sql 실행
-    conn.commit()       #db에서 커밋완료
+    cur.execute(sql)   #sql실행
+    conn.commit()      #db에서 커밋(실행)완료
     conn.close()
 
 def insert_member():
     conn = getconn()
     cur = conn.cursor()
     sql = "INSERT INTO member(mid, passwd, name, age) VALUES (?, ?, ?, ?)"
-    cur.execute(sql, ('cloud', 'm123456@', '구름', 100))
+    cur.execute(sql, ('cloud', 'm123456@', '구름', 100 ))
     conn.commit()
     print("멤버 추가")
     conn.close()
@@ -43,13 +43,22 @@ def select_member():
     cur = conn.cursor()
     sql = "SELECT * FROM member"
     cur.execute(sql)
-    rs = cur.fetchall()     #db에서 반환된 자료
+    rs = cur.fetchall()   #DB에서 반환된 자료
     #print(rs)
     for i in rs:
         print(i)
     conn.close()
 
+def delete_member():   # 회원 정보 삭제
+    conn = getconn()
+    cur = conn.cursor()
+    sql = "DELETE FROM member"
+    cur.execute(sql)
+    conn.commit()
+    conn.close()
+
 #create_table()  #호출
 #drop_table()
-insert_member()
+# insert_member()
+#delete_member()
 select_member()
