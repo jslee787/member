@@ -12,6 +12,15 @@
             <h1>회원 관리 커뮤니티입니다.</h1>
             <h2>Have a nice Day!!</h2>
             <img src="{{ url_for('static', filename='images/activity.jpg') }}" id="pic">
+            <p id="demo"></p>
+            <script>
+                setInterval(myWatch, 1000);
+                function myWatch(){
+                    var date = new Date();  //날짜, 시간 생성
+                    var now = date.toLocaleTimeString();    //시간만 표현
+                    document.getElementById("demo").innerHTML = now;
+                }
+            </script>
         </section>
     </div>
 
